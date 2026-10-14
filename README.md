@@ -83,6 +83,51 @@ student-performance-prediction/
 └── requirements.txt
 ```
 
+
+after------------------
+
+## Models and Results
+
+### 1. Regression — Predicting Final Grade
+
+We compared a mean baseline, Linear Regression, Ridge Regression, Random Forest, and Extra Trees using the same train/test split.
+
+| Model | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Random Forest | **3.306** | **4.055** | **0.198** |
+| Extra Trees | 3.417 | 4.275 | 0.109 |
+| Ridge Regression | 3.489 | 4.253 | 0.118 |
+| Linear Regression | 3.490 | 4.253 | 0.118 |
+| Mean Baseline | 3.646 | 4.550 | -0.010 |
+
+Random Forest achieved the lowest test MAE and RMSE among the models tested. However, its R² of 0.198 indicates limited predictive power.
+
+A tuned Random Forest achieved a test MAE of 3.320 and R² of 0.189, so the original Random Forest remained the stronger model on this test split.
+
+### 2. Classification — Pass/Fail Prediction
+
+Students were classified as Pass when the final mathematics grade (G3) was at least 10, and Fail otherwise. Models were compared using stratified train/test splitting and five-fold cross-validation on the training set.
+
+| Model | Test Accuracy | Fail Recall | Fail F1 |
+|---|---:|---:|---:|
+| Decision Tree | **65.8%** | 50.0% | **0.491** |
+| Balanced Logistic Regression | 63.3% | **53.8%** | **0.491** |
+| Random Forest | 64.6% | 50.0% | 0.481 |
+| Extra Trees | 63.3% | 42.3% | 0.431 |
+| Logistic Regression | 65.8% | 26.9% | 0.341 |
+
+The Decision Tree provided a balance between overall accuracy and detecting failing students. Balanced Logistic Regression identified a slightly larger proportion of failing students, illustrating the trade-off between overall accuracy and failure detection.
+
+The confusion matrices are saved at `reports/figures/classification_confusion_matrices.png`.
+
+### Evaluation and Limitations
+
+- The dataset contains 395 students, which limits how confidently results can generalize.
+- Regression models excluded G1 and G2 to avoid using earlier exam grades as predictors.
+- Regression performance was modest, and the classification models missed a substantial number of failing students.
+- Results depend on the train/test split; cross-validation was used for classification model comparison.
+- Predictions should support further investigation, not be the sole basis for academic decisions.
+
 ## Setup
 
 Python 3.11 is recommended.
